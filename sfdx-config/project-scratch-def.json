@@ -1,0 +1,16 @@
+{
+  "orgName": "Scratch Org",
+  "country": "GB",
+  "username": "test@scratch.com",
+  "adminEmail": "edelrabe@gmail.com",
+  "edition": "Developer",
+  "language": "en_US",
+  "features": "",
+  "orgPreferences": {
+    "enabled": [
+      "S1DesktopEnabled",
+      "Translation"
+    ],
+    "disabled": []
+  }
+}
