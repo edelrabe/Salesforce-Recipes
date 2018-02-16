@@ -1,0 +1,93 @@
+<apex:page id="snippets_page">
+    
+    <!-- 
+      The possible values for 
+      $User.UITheme (supposed look and feel, use this one in code) and 
+      $User.UIThemeDisplayed(actual look and feel) are the same:
+        - Theme1 — Obsolete Salesforce theme
+        - Theme2 — Salesforce Classic 2005 user interface theme
+        - Theme3 — Salesforce Classic 2010 user interface theme (Salesforce Classic)
+        - Theme4d — Modern “Lightning Experience” Salesforce theme (Lightning Experience)
+        - Theme4t — Salesforce mobile app theme
+        - Theme4u — Lightning Console theme
+        - PortalDefault — Salesforce Customer Portal theme
+        - Webstore — Salesforce AppExchange theme
+    -->
+    
+    <!-- ############# Including stylesheets based on current user interface ############# -->
+    <!-- Salesforce Classic "Aloha" theme -->
+    <apex:variable var="uiTheme" value="classic2010Theme" 
+        rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
+        <apex:stylesheet value="{!URLFOR($Resource.AppStyles, 
+                                         'classic-styling.css')}" />
+    </apex:variable>
+    
+    <!-- Lightning Desktop theme -->
+    <apex:variable var="uiTheme" value="lightningDesktop" 
+        rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
+        <apex:stylesheet value="{!URLFOR($Resource.AppStyles, 
+                                         'lightning-styling.css')}" />
+    </apex:variable>
+    
+    <!-- Salesforce mobile theme -->
+    <apex:variable var="uiTheme" value="SalesforceApp" 
+        rendered="{!$User.UIThemeDisplayed == 'Theme4t'}">
+        <apex:stylesheet value="{!URLFOR($Resource.AppStyles, 
+                                         'mobile-styling.css')}" />
+    </apex:variable>
+
+    <!-- Rest of your page -->
+    
+    <p>
+        Value of $User.UIThemeDisplayed: {! $User.UIThemeDisplayed }
+    </p>
+    <!-- ############# END_OF Including stylesheets based on current user interface ############# -->
+
+
+    <!-- ############# Define current theme on a page ############# -->
+    <apex:outputPanel rendered="{! $User.UIThemeDisplayed == 'Theme3' }">
+        <apex:outputText value="This is Salesforce Classic." />
+        <apex:outputText value="These are multiple components wrapped by an outputPanel." />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{! $User.UIThemeDisplayed == 'Theme4d' }" >
+        <apex:outputText value="Everything is simpler in Lightning Experience." />
+    </apex:outputPanel>
+    <!-- ############# END_OF Define current theme on a page ############# -->
+    
+
+    <!-- ############# Define current theme in JS (not working in static resource) ############# -->
+    <script type="text/javascript">
+        function isLightningDesktop() {
+            return( "{! $User.UIThemeDisplayed }" == "Theme4d");
+        }
+    </script>
+    
+    <script>
+        (function(myContext){
+            // Deal with possible order-of-execution issues.
+            // Don't overwrite ourself if we already exist.
+            myContext.ForceUI = myContext.ForceUI || {};
+            
+            myContext.ForceUI.UserUITheme = '{! $User.UIThemeDisplayed }';
+
+            // Utility methods that make simple string comparisons
+            // against a local UserUITheme value. This value is
+            // injected from a Visualforce page to allow expression
+            // evaluation of the $User.UIThemeDisplayed global.
+            myContext.ForceUI.isSalesforceClassic = function() {
+                return (this.UserUITheme == 'Theme3');
+            }
+            myContext.ForceUI.isLightningExperience = function() {
+                return (this.UserUITheme == 'Theme4d');
+            }
+            myContext.ForceUI.isSalesforceApp = function() {
+                return (this.UserUITheme == 'Theme4t');
+            }
+        })(this);
+    </script>
+    <!-- ############# END_OF Define current theme in JS (not working in static resource) ############# -->
+</apex:page>
+
+
+
+    
