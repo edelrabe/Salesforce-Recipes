@@ -58,6 +58,12 @@
     <!-- ############# Define current theme in JS (not working in static resource) ############# -->
     <script type="text/javascript">
         function isLightningDesktop() {
+            /* Summer 18 */
+            return UITheme.getUITheme === "Theme4d";
+        }
+    
+    
+        function isLightningDesktop() {
             return( "{! $User.UIThemeDisplayed }" == "Theme4d");
         }
     </script>
